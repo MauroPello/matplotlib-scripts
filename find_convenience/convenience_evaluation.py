@@ -61,7 +61,7 @@ def main():
     max_y_value = companies_intersections[0][1] + companies_intersections[len(companies_intersections) - 1][1]
     y_values = append(arange(0, max_y_value, round(max_y_value/15, 1)), max_y_value).round(1).tolist()
 
-    # evaluate companies near the intersections
+    # evaluate companies near the intersections and save the "best_path" overall
     best_path = []
     for intersection in companies_intersections:
         evaluation = [(intersection[0] - 0.1) * companies[index]["coefficient"] + companies[index]["constant"] for index in range(count)]
