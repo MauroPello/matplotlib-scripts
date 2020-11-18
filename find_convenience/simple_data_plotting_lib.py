@@ -20,27 +20,30 @@ class MultipleLinesGraph:
 
     # adds a line with a label assigned to it
     def add_line(self, x_arr, y_arr, label):
-        self.ax.plot(x_arr, y_arr, label=label, linewidth=2, marker="o")
+        self.ax.plot(x_arr, y_arr, label=label, linewidth=2)
+
+    def add_point(self, x, y):
+        self.ax.plot(x, y, color="black", linewidth=3, marker="o")
 
     # sets the legend up with the existing lines
     def set_legend(self, location, font_size):
         self.ax.legend(loc=location, handles=self.ax.get_lines(), prop={'size': font_size})
 
     # makes sure that the values in arr are shown on the x axis (better readability)
-    def show_values_in_x_axis(self, arr, max_value):
+    def show_values_in_x_axis(self, arr):
         # show only values not too close to each other
         for number in arr:
-            if len([num for num in self.x_ticks_arr if num > number > (num - (max_value / 50))]) == 0 and \
-               len([num for num in self.x_ticks_arr if num < number < (num + (max_value / 50))]) == 0:
+            if len([num for num in self.x_ticks_arr if num > number > (num - (arr[len(arr) - 1] / 40))]) == 0 and \
+               len([num for num in self.x_ticks_arr if num < number < (num + (arr[len(arr) - 1] / 40))]) == 0:
                 self.x_ticks_arr.append(number)
         self.ax.set_xticks(self.x_ticks_arr)
 
     # makes sure that the values in arr are shown on the y axis (better readability)
-    def show_values_in_y_axis(self, arr, max_value):
+    def show_values_in_y_axis(self, arr):
         # show only values not too close to each other
         for number in arr:
-            if len([num for num in self.y_ticks_arr if num > number > (num - (max_value / 50))]) == 0 and \
-               len([num for num in self.y_ticks_arr if num < number < (num + (max_value / 50))]) == 0:
+            if len([num for num in self.y_ticks_arr if num > number > (num - (arr[len(arr) - 1] / 40))]) == 0 and \
+               len([num for num in self.y_ticks_arr if num < number < (num + (arr[len(arr) - 1] / 40))]) == 0:
                 self.y_ticks_arr.append(number)
         self.ax.set_yticks(self.y_ticks_arr)
 

@@ -1,6 +1,7 @@
 import csv
 from simple_data_plotting_lib import OnlyColumnsTable, MultipleLinesGraph
 
+
 # functions that returns a new array where every value has been subtracted by the one before
 def calculate_margin(arr):
     tmp = [0]
