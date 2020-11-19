@@ -125,6 +125,7 @@ def main():
     # assembling all the data gathered
     table_data = {
         "Company": [node["name"] for node in best_path],
+        "Cost Equation": [f'{company["coefficient"]}x {"%+d" % company["constant"]}' for company in companies],
         "Start of Convenience Range": [f'{node["start"][0]} items'for node in best_path],
         "End of Convenience Range": map(lambda num: "Infinite Items" if num > max_x_value else f"{num} items", [node["end"][0] for node in best_path])
     }
