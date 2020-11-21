@@ -127,3 +127,8 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+/production-plan/table.png
+/marginal-profits/table.png
+/find-convenience/table.png
+/marginal-profits/graph.png
+/find-convenience/graph.png
