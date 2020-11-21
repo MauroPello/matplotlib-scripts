@@ -14,11 +14,16 @@ class MultipleLinesGraph:
         self.ax.set_xlim(left=0)            # making the x axis start from x=0
         self.ax.set_ylim(bottom=0)          # making the y axis start from y=0
 
-        self.ax.grid()          # enables the grid to allow better viewing of values in the graph
+        self.ax.grid()  # enables the grid to allow better viewing of values in the graph
+        self.x_ticks_arr = []
+        self.y_ticks_arr = []
 
     # adds a line with a label assigned to it
     def add_line(self, x_arr, y_arr, label):
-        self.ax.plot(x_arr, y_arr, label=label, linewidth=2, marker="o")
+        self.ax.plot(x_arr, y_arr, label=label, linewidth=2)
+
+    def add_point(self, x, y):
+        self.ax.plot(x, y, color="black", linewidth=3, marker="o")
 
     # sets the legend up with the existing lines
     def set_legend(self, location, font_size):
@@ -26,11 +31,24 @@ class MultipleLinesGraph:
 
     # makes sure that the values in arr are shown on the x axis (better readability)
     def show_values_in_x_axis(self, arr):
-        self.ax.set_xticks(arr)
+        # show only values not too close to each other
+        for number in arr:
+            if len([num for num in self.x_ticks_arr if num > number > (num - (arr[len(arr) - 1] / 40))]) == 0 and \
+               len([num for num in self.x_ticks_arr if num < number < (num + (arr[len(arr) - 1] / 40))]) == 0:
+                self.x_ticks_arr.append(number)
+        self.ax.set_xticks(self.x_ticks_arr)
 
     # makes sure that the values in arr are shown on the y axis (better readability)
     def show_values_in_y_axis(self, arr):
-        self.ax.set_yticks(arr)
+        # show only values not too close to each other
+        for number in arr:
+            if len([num for num in self.y_ticks_arr if num > number > (num - (arr[len(arr) - 1] / 40))]) == 0 and \
+               len([num for num in self.y_ticks_arr if num < number < (num + (arr[len(arr) - 1] / 40))]) == 0:
+                self.y_ticks_arr.append(number)
+        self.ax.set_yticks(self.y_ticks_arr)
+
+    def fill_between_x_axis(self, x, y):
+        self.ax.fill_between(x, 0, y, facecolor='#d9d9d9')
 
     # saves the graph to a file with DPI=200 and no extra white space ('tight')
     def save_to_file(self, file_name, file_format):
@@ -40,8 +58,8 @@ class MultipleLinesGraph:
 # very simple table with only columns already formatted for nice readability
 class OnlyColumnsTable:
     def __init__(self, title, title_font_size):
-        self.fig, self.ax = plt.subplots()          # table subplot (space where we will be working)
-        self.ax.set_title(title, fontsize=title_font_size, loc="center", fontweight='bold') # setting the table title
+        self.fig, self.ax = plt.subplots()  # table subplot (space where we will be working)
+        self.ax.set_title(title, fontsize=title_font_size, loc="center", fontweight='bold')  # setting the table title
 
         # removing the axis (useless in this case because we are rendering a table, not a graph)
         self.ax.axis('off')
@@ -51,7 +69,7 @@ class OnlyColumnsTable:
 
     # fills the table with data
     def fill(self, data):
-        data_frame = pd.DataFrame(data)     # using pandas to correctly render data into the table
+        data_frame = pd.DataFrame(data)  # using pandas to correctly render data into the table
 
         column_colors = ["#d9d9d9" for i in range(data_frame.shape[1])]         # list of colors specific to each column
         cell_colors = [["#f2f2f2" for i in range(data_frame.shape[1])] for i in range(data_frame.shape[0])]         # list of colors specific to each cell
