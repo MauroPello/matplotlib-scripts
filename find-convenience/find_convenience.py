@@ -4,7 +4,7 @@ import inspect
 PACKAGE_PARENT = '..'
 SCRIPT_DIR = os.path.realpath(os.path.dirname(inspect.getfile(inspect.currentframe())))
 sys.path.append(os.path.normpath(os.path.join(SCRIPT_DIR, PACKAGE_PARENT)))
-from data-plotting-lib.simple_data_plotting_lib import OnlyColumnsTable, MultipleLinesGraph
+from dataplotting.simple_data_plotting_lib import OnlyColumnsTable, MultipleLinesGraph
 from numpy import append, zeros, array, arange
 from scipy.optimize import fsolve
 
@@ -136,7 +136,7 @@ def main():
     # assembling all the data gathered
     table_data = {
         "Company": [node["name"] for node in best_path],
-        "Cost Equation": [f'{company["coefficient"]}x {"%+d" % company["constant"]}' for company in companies],
+        "Cost Equation": [f'{company["coefficient"]}x {"%+ d" % company["constant"]}' for company in companies],
         "Start of Convenience Range": [f'{node["start"][0]} items'for node in best_path],
         "End of Convenience Range": map(lambda num: "Infinite Items" if num > max_x_value else f"{num} items", [node["end"][0] for node in best_path])
     }
