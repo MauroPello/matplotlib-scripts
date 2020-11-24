@@ -25,7 +25,7 @@ def main():
 
     while True:
         try:
-            if (tmp := float(input("Enter the production costs for an item: "))) <= 0:
+            if (tmp := float(input("Enter the production costs for an item: "))) < 0:
                 raise ValueError
             else:
                 costs["coefficient"] = tmp
@@ -35,7 +35,7 @@ def main():
 
     while True:
         try:
-            if (tmp := float(input("Enter the fixed costs for the company: "))) <= 0:
+            if (tmp := float(input("Enter the fixed costs for the company: "))) < 0:
                 raise ValueError
             else:
                 costs["constant"] = tmp
@@ -69,7 +69,7 @@ def main():
     y_values = append(arange(0, max_y_value, round(max_y_value/15, 1)), max_y_value).round(1).tolist()
 
     # makes the graph
-    graph = MultipleLinesGraph("Production Evaluation", "Costs", "Prices", 15, 15, 20)  # creates a new graph
+    graph = MultipleLinesGraph(f"Production Evaluation\nBreak-Even Point: {intersection[0]} items for {intersection[1]}$", "Costs", "Prices", 15, 15, 15)  # creates a new graph
 
     y = [costs["coefficient"] * number + costs["constant"] for number in x_values]
     graph.add_line(x_values, y, "Costs")
