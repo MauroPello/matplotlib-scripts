@@ -76,30 +76,30 @@ def main():
     best_path = []
     for intersection in companies_intersections:
         evaluation = [(intersection[0] - 0.1) * companies[index]["coefficient"] + companies[index]["constant"] for index in range(count)]
-        name = companies[evaluation.index(min(evaluation))]["name"]
+        best_company = companies[evaluation.index(min(evaluation))]
 
         if len(best_path) == 0:
             best_path.append({
-                "name": name,
+                "company": best_company,
                 "start": (0, 0),
                 "end": intersection
             })
-        elif best_path[len(best_path) - 1]["name"] == name:
+        elif best_path[len(best_path) - 1]["company"]["name"] == best_company["name"]:
             best_path[len(best_path) - 1] = {
-                "name": name,
+                "company": best_company,
                 "start": best_path[len(best_path) - 1]["start"],
                 "end": intersection
             }
         else:
             best_path.append({
-                "name": name,
+                "company": best_company,
                 "start": best_path[len(best_path) - 1]["end"],
                 "end": intersection
             })
     evaluation = [(best_path[len(best_path) - 1]["end"][0] + 0.1) * companies[index]["coefficient"] + companies[index]["constant"] for index in
                   range(count)]
     best_path.append({
-        "name": companies[evaluation.index(min(evaluation))]["name"],
+        "company": companies[evaluation.index(min(evaluation))],
         "start": best_path[len(best_path) - 1]["end"],
         "end": (max_x_value + 1, 0)
     })
@@ -110,8 +110,7 @@ def main():
     for node in best_path:
         intervals = append(arange(node["start"][0], node["end"][0], round(node["end"][0]/15, 1)), node["end"][0]).round(1).tolist()
         best_path_x += intervals
-        tmp = next(company for company in companies if company["name"] == node["name"])
-        best_path_y += [tmp["coefficient"] * number + tmp["constant"] for number in intervals]
+        best_path_y += [node["company"]["coefficient"] * number + node["company"]["constant"] for number in intervals]
 
     # makes the graph
     graph = MultipleLinesGraph("Convenience Graph", "Quantity", "Costs", 15, 15, 20)  # creates a new graph
@@ -135,10 +134,10 @@ def main():
 
     # assembling all the data gathered
     table_data = {
-        "Company": [node["name"] for node in best_path],
-        "Cost Equation": [f'{company["coefficient"]}x {"%+ d" % company["constant"]}' for company in companies],
+        "Company": [node["company"]["name"] for node in best_path],
+        "Cost Equation": [f'{node["company"]["coefficient"]}x {"%+d" % node["company"]["constant"]}' for node in best_path],
         "Start of Convenience Range": [f'{node["start"][0]} items'for node in best_path],
-        "End of Convenience Range": map(lambda num: "Infinite Items" if num > max_x_value else f"{num} items", [node["end"][0] for node in best_path])
+        "End of Convenience Range": list(map(lambda num: "Infinite Items" if num > max_x_value else f"{num} items", [node["end"][0] for node in best_path]))
     }
 
     # makes a table
