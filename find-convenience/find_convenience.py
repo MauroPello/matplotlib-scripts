@@ -57,12 +57,13 @@ def main():
                 [companies[i]['coefficient'], companies[j]['coefficient']],
                 [companies[i]['constant'], companies[j]['constant']]))))
     companies_intersections = list(filter(lambda tup: True if len(tup) > 0 and tup[0] > 0 and tup[1] > 0 else False, companies_intersections))
-    companies_intersections = sorted(companies_intersections, key=lambda k: (k[1], k[0]))
-    companies_intersections = [(round(intersection[1], 3), round(intersection[0], 3)) for intersection in companies_intersections]
 
     if len(companies_intersections) == 0:
         print("No Positive Intersections Found!")
         exit(1)
+
+    companies_intersections = sorted(companies_intersections, key=lambda k: (k[1], k[0]))
+    companies_intersections = [(round(intersection[1], 3), round(intersection[0], 3)) for intersection in companies_intersections]
 
     # get the max graph value for the x coordinate
     max_x_value = 2 * companies_intersections[0][0] + companies_intersections[len(companies_intersections) - 1][0]
