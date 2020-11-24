@@ -124,7 +124,7 @@ def main():
     graph.show_values_in_x_axis(append(x_values, [intersection[0] for intersection in companies_intersections]).tolist())
     graph.show_values_in_y_axis(append(y_values, [intersection[1] for intersection in companies_intersections]).tolist())
 
-    graph.fill_between_x_axis(best_path_x, best_path_y)
+    graph.fill_between_x_axis(best_path_x, best_path_y, 0, None)
 
     graph.set_legend("lower right", 20)  # setting up the legend
 

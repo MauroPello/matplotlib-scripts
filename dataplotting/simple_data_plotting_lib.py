@@ -47,8 +47,8 @@ class MultipleLinesGraph:
                 self.y_ticks_arr.append(number)
         self.ax.set_yticks(self.y_ticks_arr)
 
-    def fill_between_x_axis(self, x, y):
-        self.ax.fill_between(x, 0, y, facecolor='#d9d9d9')
+    def fill_between_2_lines(self, x1, y1, x2, y2):
+        self.ax.fill_between(x1, x2, y1, y2, facecolor='#d9d9d9')
 
     # saves the graph to a file with DPI=200 and no extra white space ('tight')
     def save_to_file(self, file_name, file_format):
