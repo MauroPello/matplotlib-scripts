@@ -71,11 +71,14 @@ def main():
     # makes the graph
     graph = MultipleLinesGraph(f"Production Evaluation\nBreak-Even Point: {intersection[0]} items for {intersection[1]}$", "Costs", "Prices", 15, 15, 15)  # creates a new graph
 
-    y = [costs["coefficient"] * number + costs["constant"] for number in x_values]
-    graph.add_line(x_values, y, "Costs")
+    graph.add_line(x_values, [costs["coefficient"] * x + costs["constant"] for x in x_values], "Costs")
+    graph.add_line(x_values, [item_price * x for x in x_values], "Prices")
 
-    y = [item_price * number for number in x_values]
-    graph.add_line(x_values, y, "Prices")
+    x_values_after_point = append(arange(intersection[0], max_x_value, round(max_x_value/15, 1)), max_x_value).round(1).tolist()
+    print(x_values_after_point)
+    print()
+    graph.fill_between_2_lines(x_values_after_point, [(costs["coefficient"] * x + costs["constant"]) for x in x_values_after_point],
+                                x_values_after_point, [item_price * x for x in x_values_after_point])
 
     graph.show_values_in_x_axis(append(x_values, intersection[0]).tolist())
     graph.show_values_in_y_axis(append(y_values, intersection[1]).tolist())
