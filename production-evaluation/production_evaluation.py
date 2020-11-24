@@ -75,10 +75,8 @@ def main():
     graph.add_line(x_values, [item_price * x for x in x_values], "Prices")
 
     x_values_after_point = append(arange(intersection[0], max_x_value, round(max_x_value/15, 1)), max_x_value).round(1).tolist()
-    print(x_values_after_point)
-    print()
-    graph.fill_between_2_lines(x_values_after_point, [(costs["coefficient"] * x + costs["constant"]) for x in x_values_after_point],
-                                x_values_after_point, [item_price * x for x in x_values_after_point])
+    graph.fill_between_2_lines(x_values_after_point, [item_price * x for x in x_values_after_point],
+                               [(costs["coefficient"] * x + costs["constant"]) for x in x_values_after_point])
 
     graph.show_values_in_x_axis(append(x_values, intersection[0]).tolist())
     graph.show_values_in_y_axis(append(y_values, intersection[1]).tolist())
