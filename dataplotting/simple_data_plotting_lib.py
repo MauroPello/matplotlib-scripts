@@ -96,3 +96,25 @@ class OnlyColumnsTable:
     # saves the graph to a file with DPI=200 and no extra white space ('tight')
     def save_to_file(self, file_name, file_format):
         self.fig.savefig(f'{file_name}.{file_format}', format=file_format, dpi=200, bbox_inches='tight')
+
+
+# plotting points and planes in a 3D space
+class Plot3D:
+    def __init__(self, width, height):
+        self.fig, self.ax = plt.subplots(figsize=(width, height))   # graph subplot (space where we will be working)
+
+        self.ax.set_xlim(left=0)            # making the x axis start from x=0
+        self.ax.set_ylim(bottom=0)          # making the y axis start from y=0
+        # self.ax.set_zlim(min_value=0)       # making the z axis start from z=0
+
+        self.ax.grid()  # enables the grid to allow better viewing of values in the graph
+
+    def add3Dpoint(self, x, y, z):
+        print(f"adding 3D point at coords({x}, {y}, {z})...")
+
+    def add3Dplane(self):
+        print("adding 3D plane...")
+
+    # saves the graph to a file with DPI=200 and no extra white space ('tight')
+    def save_to_file(self, file_name, file_format):
+        self.fig.savefig(f'{file_name}.{file_format}', format=file_format, dpi=200, bbox_inches='tight')
