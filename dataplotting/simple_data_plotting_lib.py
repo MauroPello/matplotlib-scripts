@@ -104,19 +104,19 @@ class Plot3D:
         self.fig = plt.figure(figsize=(width, height))
         self.ax = self.fig.add_subplot(111, projection="3d")   # graph subplot (space where we will be working)
 
-        self.ax.set_xlim(x_lim["min"], x_lim["max"])            # making the x axis start from x=0
+        self.ax.set_xlim(x_lim["min"], x_lim["max"])          # making the x axis start from x=0
         self.ax.set_ylim(y_lim["min"], y_lim["max"])          # making the y axis start from y=0
-        self.ax.set_zlim(z_lim["min"], z_lim["max"])       # making the z axis start from z=0
+        self.ax.set_zlim(z_lim["min"], z_lim["max"])          # making the z axis start from z=0
 
         self.ax.grid()  # enables the grid to allow better viewing of values in the graph
 
     # plotting a point in the 3D space
     def add3Dpoint(self, x, y, z):
-        self.ax.plot([x], [y], [z], markerfacecolor='k', markeredgecolor='k', marker='o', markersize=5, alpha=0.6)
+        self.ax.scatter(x, y, z, marker='o', alpha=0.5)
 
     # plotting a plane in the 3D space
-    def add3Dplane(self):
-        print("adding 3D plane...")
+    def add3Dplane(self, x, y, z):
+        self.ax.plot_surface(x, y, z, alpha=0.5)
 
     # saves the graph to a file with DPI=200 and no extra white space ('tight')
     def save_to_file(self, file_name, file_format):

@@ -1,0 +1,60 @@
+[
+    {
+        "name": "A",
+        "type": "point",
+        "coordinates" : {
+            "x": 10,
+            "y": 15,
+            "z": 5
+        }
+    },
+    {
+        "name": "B",
+        "type": "point",
+        "coordinates" : {
+            "x": 1,
+            "y": 5,
+            "z": 3
+        }
+    },
+    {
+        "name": "a",
+        "type": "plane",
+        "coefficients" : {
+            "a": 3,
+            "b": 3,
+            "c": 1,
+            "d": -6
+        }
+    },
+    {
+        "name": "b",
+        "type": "plane",
+        "coefficients" : {
+            "a": 2,
+            "b": 0,
+            "c": 0,
+            "d": 4
+        }
+    },
+    {
+        "name": "c",
+        "type": "plane",
+        "coefficients" : {
+            "a": 0,
+            "b": 3,
+            "c": 0,
+            "d": -3
+        }
+    },
+    {
+        "name": "d",
+        "type": "plane",
+        "coefficients" : {
+            "a": 0,
+            "b": 0,
+            "c": 1,
+            "d": -1
+        }
+    }
+]
