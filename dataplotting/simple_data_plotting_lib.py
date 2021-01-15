@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 
 
@@ -104,19 +105,24 @@ class Plot3D:
         self.fig = plt.figure(figsize=(width, height))
         self.ax = self.fig.add_subplot(111, projection="3d")   # graph subplot (space where we will be working)
 
-        self.ax.set_xlim(x_lim["min"], x_lim["max"])          # making the x axis start from x=0
-        self.ax.set_ylim(y_lim["min"], y_lim["max"])          # making the y axis start from y=0
-        self.ax.set_zlim(z_lim["min"], z_lim["max"])          # making the z axis start from z=0
+        self.ax.set_xlim(x_lim["min"], x_lim["max"])            # making the x axis start from x=0
+        self.ax.set_xlabel("X")                                 # setting the label for the x axis
+        self.ax.set_ylim(y_lim["min"], y_lim["max"])            # making the y axis start from y=0
+        self.ax.set_ylabel("Y")                                 # setting the label for the y axis
+        self.ax.set_zlim(z_lim["min"], z_lim["max"])            # making the z axis start from z=0
+        self.ax.set_zlabel("Z")                                 # setting the label for the z axis
 
         self.ax.grid()  # enables the grid to allow better viewing of values in the graph
 
     # plotting a point in the 3D space
-    def add3Dpoint(self, x, y, z):
+    def add3Dpoint(self, label, x, y, z):
         self.ax.scatter(x, y, z, marker='o', alpha=0.5)
+        self.ax.text(x, y, z, label)
 
     # plotting a plane in the 3D space
-    def add3Dplane(self, x, y, z):
+    def add3Dplane(self, label, x, y, z):
         self.ax.plot_surface(x, y, z, alpha=0.5)
+        self.ax.text(np.average(x), np.average(y), np.average(z), label)
 
     # saves the graph to a file with DPI=200 and no extra white space ('tight')
     def save_to_file(self, file_name, file_format):

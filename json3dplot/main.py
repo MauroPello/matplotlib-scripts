@@ -46,7 +46,8 @@ def main():
     for item in to_plot:
         if item["type"] == "point":
             # adding point to points array
-            points.append({"x": item["coordinates"]["x"],
+            points.append({"name": item["name"],
+                           "x": item["coordinates"]["x"],
                            "y": item["coordinates"]["y"],
                            "z": item["coordinates"]["z"]})
 
@@ -64,11 +65,37 @@ def main():
             c = item["coefficients"]["c"]
             d = item["coefficients"]["d"]
 
-            # calculating mesh to plot
-            xx, yy = np.meshgrid(range(10), range(10))
-            if c == 0:
-                zz = (-a * xx - b * yy - d) * 1. * c
+            if a == 0 and b == 0 and c == 0:
+                continue
+
+            if a == 0 and b == 0:
+                xx, yy = np.meshgrid(range(10), range(10))
+                zz = (xx * 0) + ((-d) * 1. / c)
+            elif a == 0 and c == 0:
+                xx, zz = np.meshgrid(range(10), range(10))
+                yy = (xx * 0) + ((-d) * 1. / b)
+            elif b == 0 and c == 0:
+                yy, zz = np.meshgrid(range(10), range(10))
+                xx = (yy * 0) + ((-d) * 1. / a)
+            elif a == 0:
+                yy, zz = np.meshgrid(range(10), range(10))
+                yy *= b
+                zz *= c
+                xx = yy * a
+            elif b == 0:
+                xx, zz = np.meshgrid(range(10), range(10))
+                xx *= a
+                zz *= c
+                yy = xx * b
+            elif c == 0:
+                xx, yy = np.meshgrid(range(10), range(10))
+                xx *= a
+                yy *= b
+                zz = xx * c
             else:
+                xx, yy = np.meshgrid(range(10), range(10))
+                xx *= a
+                yy *= b
                 zz = (-a * xx - b * yy - d) * 1. / c
 
             # calculating min and max for all axes (with the extra_padding)
@@ -80,7 +107,8 @@ def main():
             z_lim["max"] = max(z_lim["max"], np.max(zz) + extra_padding)
 
             # adding plane function to planes
-            planes.append({"x": xx,
+            planes.append({"name": item["name"],
+                           "x": xx,
                            "y": yy,
                            "z": zz})
             pass
@@ -93,11 +121,11 @@ def main():
 
     # plotting planes
     for plane in planes:
-        space.add3Dplane(plane["x"], plane["y"], plane["z"])
+        space.add3Dplane(plane["name"], plane["x"], plane["y"], plane["z"])
 
     # plotting points
     for point in points:
-        space.add3Dpoint(point["x"], point["y"], point["z"])
+        space.add3Dpoint(point["name"], point["x"], point["y"], point["z"])
 
     # saving the 3D space to file
     space.save_to_file(json_file, "png")
