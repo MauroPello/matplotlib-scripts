@@ -1,0 +1,40 @@
+[
+    {
+        "name": "A",
+        "type": "point",
+        "coordinates" : {
+            "x": 10,
+            "y": 15,
+            "z": 5
+        }
+    },
+    {
+        "name": "B",
+        "type": "point",
+        "coordinates" : {
+            "x": 1,
+            "y": 5,
+            "z": 3
+        }
+    },
+    {
+        "name": "a",
+        "type": "plane",
+        "coefficients" : {
+            "x": 10,
+            "y": 15,
+            "z": 5,
+            "constant": -3
+        }
+    },
+    {
+        "name": "b",
+        "type": "plane",
+        "coefficients" : {
+            "x": 1,
+            "y": 5,
+            "z": 2,
+            "constant": -3
+        }
+    }
+]
