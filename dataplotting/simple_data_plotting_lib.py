@@ -100,18 +100,21 @@ class OnlyColumnsTable:
 
 # plotting points and planes in a 3D space
 class Plot3D:
-    def __init__(self, width, height):
-        self.fig, self.ax = plt.subplots(figsize=(width, height))   # graph subplot (space where we will be working)
+    def __init__(self, width, height, x_lim, y_lim, z_lim):
+        self.fig = plt.figure(figsize=(width, height))
+        self.ax = self.fig.add_subplot(111, projection="3d")   # graph subplot (space where we will be working)
 
-        self.ax.set_xlim(left=0)            # making the x axis start from x=0
-        self.ax.set_ylim(bottom=0)          # making the y axis start from y=0
-        # self.ax.set_zlim(min_value=0)       # making the z axis start from z=0
+        self.ax.set_xlim(x_lim["min"], x_lim["max"])            # making the x axis start from x=0
+        self.ax.set_ylim(y_lim["min"], y_lim["max"])          # making the y axis start from y=0
+        self.ax.set_zlim(z_lim["min"], z_lim["max"])       # making the z axis start from z=0
 
         self.ax.grid()  # enables the grid to allow better viewing of values in the graph
 
+    # plotting a point in the 3D space
     def add3Dpoint(self, x, y, z):
-        print(f"adding 3D point at coords({x}, {y}, {z})...")
+        self.ax.plot([x], [y], [z], markerfacecolor='k', markeredgecolor='k', marker='o', markersize=5, alpha=0.6)
 
+    # plotting a plane in the 3D space
     def add3Dplane(self):
         print("adding 3D plane...")
 
