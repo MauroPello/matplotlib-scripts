@@ -134,3 +134,9 @@ def main():
 # starts script only if directly called
 if __name__ == "__main__":
     main()
+
+# TODO:
+#  set max displayable size for planes,
+#  change to normal view if possible,
+#  figuring out how to plot complex equations (ex. root, powers and other funcs)
+#  adding other functions (circles and parabolas).

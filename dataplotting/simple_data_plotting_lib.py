@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
 import pandas as pd
 
@@ -104,6 +105,8 @@ class Plot3D:
     def __init__(self, width, height, x_lim, y_lim, z_lim):
         self.fig = plt.figure(figsize=(width, height))
         self.ax = self.fig.add_subplot(111, projection="3d")   # graph subplot (space where we will be working)
+
+        self.ax.view_init(elev=30, azim=45)
 
         self.ax.set_xlim(x_lim["min"], x_lim["max"])            # making the x axis start from x=0
         self.ax.set_xlabel("X")                                 # setting the label for the x axis
