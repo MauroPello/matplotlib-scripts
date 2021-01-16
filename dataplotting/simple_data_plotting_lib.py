@@ -108,11 +108,11 @@ class Plot3D:
 
         self.ax.view_init(elev=30, azim=45)
 
-        self.ax.set_xlim(x_lim["min"], x_lim["max"])            # making the x axis start from x=0
+        self.ax.set_xlim(x_lim["min"], x_lim["max"])            # set optimal x axis limits
         self.ax.set_xlabel("X")                                 # setting the label for the x axis
-        self.ax.set_ylim(y_lim["min"], y_lim["max"])            # making the y axis start from y=0
+        self.ax.set_ylim(y_lim["min"], y_lim["max"])            # set optimal y axis limits
         self.ax.set_ylabel("Y")                                 # setting the label for the y axis
-        self.ax.set_zlim(z_lim["min"], z_lim["max"])            # making the z axis start from z=0
+        self.ax.set_zlim(z_lim["min"], z_lim["max"])            # set optimal z axis limits
         self.ax.set_zlabel("Z")                                 # setting the label for the z axis
 
         self.ax.grid()  # enables the grid to allow better viewing of values in the graph
