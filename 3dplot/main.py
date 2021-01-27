@@ -27,7 +27,21 @@ def get_coefficient(equation, variable):
     return float([arg for arg in mul[0].args if arg.is_Number][0])
 
 
+def get_json():
+    while True:
+        try:
+            json_file = str(input("Enter the json file name: "))
+            if os.path.isfile(
+                    os.path.join(os.path.dirname(os.path.abspath(__file__)), f"{json_file}.json")):
+                return json_file
+            else:
+                raise ValueError
+        except ValueError:
+            print("The entered file doesn't exist!")
+
+
 def main():
+    # common variables
 
     # available 3D objects
     obj_types = ("point", "plane")
@@ -36,9 +50,6 @@ def main():
     x = Symbol('x')
     y = Symbol('y')
     z = Symbol('z')
-
-    # extra padding for min and max axes
-    extra_padding = 5
 
     # min and max for each coordinate
     x_lim = {"min": 0, "max": 0}
@@ -56,25 +67,17 @@ def main():
 
     output_filename = "output"
 
+
+    #CLI menu
     while True:
         # asking the user if he wants to enter more 3D objects
         try:
             choice = str(input("Do you want to use json files(y/n)? ")).upper()
             if choice == "Y" or choice == "YES":
-                while True:
-                    try:
-                        json_file = str(input("Enter the json file name: "))
-                        if os.path.isfile(
-                                os.path.join(os.path.dirname(os.path.abspath(__file__)), f"{json_file}.json")):
-                            output_filename = json_file
-                            break
-                        else:
-                            raise ValueError
-                    except ValueError:
-                        print("The entered file doesn't exist!")
+                output_filename = get_json()
 
                 # reading input json file
-                with open(f"{json_file}.json") as f:
+                with open(f"{output_filename}.json") as f:
                     to_plot = json.load(f)
                 break
             elif choice == "N" or choice == "NO":
@@ -178,14 +181,6 @@ def main():
                            "x": item["coordinates"]["x"],
                            "y": item["coordinates"]["y"],
                            "z": item["coordinates"]["z"]})
-
-            # calculating min and max for all axes (with the extra_padding)
-            x_lim["min"] = round(min(x_lim["min"], item["coordinates"]["x"] - extra_padding))
-            x_lim["max"] = round(max(x_lim["max"], item["coordinates"]["x"] + extra_padding))
-            y_lim["min"] = round(min(y_lim["min"], item["coordinates"]["y"] - extra_padding))
-            y_lim["max"] = round(max(y_lim["max"], item["coordinates"]["y"] + extra_padding))
-            z_lim["min"] = round(min(z_lim["min"], item["coordinates"]["z"] - extra_padding))
-            z_lim["max"] = round(max(z_lim["max"], item["coordinates"]["z"] + extra_padding))
         elif item["type"] == obj_types[1]:
             # function coefficients
             a = item["coefficients"]["a"]
@@ -196,7 +191,7 @@ def main():
             if a == 0 and b == 0 and c == 0:
                 continue
 
-            fill_values = np.arange(0, 10, 1.)
+            fill_values = np.linspace(0, 10, 10)
 
             if a == 0 and b == 0:
                 xx, yy = np.meshgrid(fill_values, fill_values)
@@ -209,35 +204,78 @@ def main():
                 xx = (yy * 0) + ((-d) * 1. / a)
             elif a == 0:
                 yy, zz = np.meshgrid(fill_values, fill_values)
-                yy *= b
-                zz *= c
                 xx = yy * a
             elif b == 0:
                 xx, zz = np.meshgrid(fill_values, fill_values)
-                xx *= a
-                zz *= c
                 yy = xx * b
             elif c == 0:
                 xx, yy = np.meshgrid(fill_values, fill_values)
-                xx *= a
-                yy *= b
                 zz = xx * c
             else:
                 xx, yy = np.meshgrid(fill_values, fill_values)
-                xx *= a
-                yy *= b
                 zz = (-a * xx - b * yy - d) * 1. / c
-
-            # calculating min and max for all axes (with the extra_padding)
-            x_lim["min"] = round(min(x_lim["min"], np.min(xx) - extra_padding))
-            x_lim["max"] = round(max(x_lim["max"], np.max(xx) + extra_padding))
-            y_lim["min"] = round(min(y_lim["min"], np.min(yy) - extra_padding))
-            y_lim["max"] = round(max(y_lim["max"], np.max(yy) + extra_padding))
-            z_lim["min"] = round(min(z_lim["min"], np.min(zz) - extra_padding))
-            z_lim["max"] = round(max(z_lim["max"], np.max(zz) + extra_padding))
 
             # adding plane function to planes
             planes.append({"name": item["name"],
+                           "x": xx,
+                           "y": yy,
+                           "z": zz})
+
+    # calculating all mins and maxes
+    if len(points) > 0:
+        x_lim["min"] = round(min(x_lim["min"], np.min([point["x"] for point in points])))
+        x_lim["max"] = round(max(x_lim["max"], np.max([point["x"] for point in points])))
+        y_lim["min"] = round(min(y_lim["min"], np.min([point["y"] for point in points])))
+        y_lim["max"] = round(max(y_lim["max"], np.max([point["y"] for point in points])))
+        z_lim["min"] = round(min(z_lim["min"], np.min([point["z"] for point in points])))
+        z_lim["max"] = round(max(z_lim["max"], np.max([point["z"] for point in points])))
+
+    if len(planes) > 0:
+        x_lim["min"] = round(min(x_lim["min"], np.min([np.min(plane["x"]) for plane in planes])))
+        x_lim["max"] = round(max(x_lim["max"], np.max([np.max(plane["x"]) for plane in planes])))
+        y_lim["min"] = round(min(y_lim["min"], np.min([np.min(plane["y"]) for plane in planes])))
+        y_lim["max"] = round(max(y_lim["max"], np.max([np.max(plane["y"]) for plane in planes])))
+        z_lim["min"] = round(min(z_lim["min"], np.min([np.min(plane["z"]) for plane in planes])))
+        z_lim["max"] = round(max(z_lim["max"], np.max([np.max(plane["z"]) for plane in planes])))
+
+    refined_planes = []
+
+    # reading the file and saving data into arrays
+    for item in to_plot:
+        if item["type"] == obj_types[1]:
+            # function coefficients
+            a = item["coefficients"]["a"]
+            b = item["coefficients"]["b"]
+            c = item["coefficients"]["c"]
+            d = item["coefficients"]["d"]
+
+            if a == 0 and b == 0 and c == 0:
+                continue
+
+            if a == 0 and b == 0:
+                xx, yy = np.meshgrid(np.linspace(x_lim["min"], x_lim["max"], 10), np.linspace(y_lim["min"], y_lim["max"], 10))
+                zz = (xx * 0) + ((-d) * 1. / c)
+            elif a == 0 and c == 0:
+                xx, zz = np.meshgrid(np.linspace(x_lim["min"], x_lim["max"], 10), np.linspace(z_lim["min"], z_lim["max"], 10))
+                yy = (xx * 0) + ((-d) * 1. / b)
+            elif b == 0 and c == 0:
+                yy, zz = np.meshgrid(np.linspace(y_lim["min"], y_lim["max"], 10), np.linspace(z_lim["min"], z_lim["max"], 10))
+                xx = (yy * 0) + ((-d) * 1. / a)
+            elif a == 0:
+                yy, zz = np.meshgrid(np.linspace(y_lim["min"], y_lim["max"], 10), np.linspace(z_lim["min"], z_lim["max"], 10))
+                xx = yy * a
+            elif b == 0:
+                xx, zz = np.meshgrid(np.linspace(x_lim["min"], x_lim["max"], 10), np.linspace(z_lim["min"], z_lim["max"], 10))
+                yy = xx * b
+            elif c == 0:
+                xx, yy = np.meshgrid(np.linspace(x_lim["min"], x_lim["max"], 10), np.linspace(y_lim["min"], y_lim["max"], 10))
+                zz = xx * c
+            else:
+                xx, yy = np.meshgrid(np.linspace(x_lim["min"], x_lim["max"], 10), np.linspace(y_lim["min"], y_lim["max"], 10))
+                zz = (-a * xx - b * yy - d) * 1. / c
+
+            # adding plane function to planes
+            refined_planes.append({"name": item["name"],
                            "x": xx,
                            "y": yy,
                            "z": zz})
@@ -246,7 +284,7 @@ def main():
     space = Plot3D(10, 10, x_lim, y_lim, z_lim)
 
     # plotting planes
-    for plane in planes:
+    for plane in refined_planes:
         space.add3Dplane(plane["name"], plane["x"], plane["y"], plane["z"])
 
     # plotting points
@@ -262,5 +300,4 @@ if __name__ == "__main__":
     main()
 
 # TODO:
-#  set max displayable size for planes,
 #  adding other functions (circles and parabolas).
