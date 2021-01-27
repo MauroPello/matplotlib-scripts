@@ -215,7 +215,7 @@ def main():
                 xx, yy = np.meshgrid(fill_values, fill_values)
                 zz = (-a * xx - b * yy - d) * 1. / c
 
-            # adding plane function to planes
+            # saving first calculation of planes
             planes.append({"name": item["name"],
                            "x": xx,
                            "y": yy,
@@ -240,7 +240,7 @@ def main():
 
     refined_planes = []
 
-    # reading the file and saving data into arrays
+    # recalculating planes to fit the Axes
     for item in to_plot:
         if item["type"] == obj_types[1]:
             # function coefficients
@@ -274,7 +274,7 @@ def main():
                 xx, yy = np.meshgrid(np.linspace(x_lim["min"], x_lim["max"], 10), np.linspace(y_lim["min"], y_lim["max"], 10))
                 zz = (-a * xx - b * yy - d) * 1. / c
 
-            # adding plane function to planes
+            # saving the refined planes
             refined_planes.append({"name": item["name"],
                            "x": xx,
                            "y": yy,
@@ -290,6 +290,9 @@ def main():
     # plotting points
     for point in points:
         space.add3Dpoint(point["name"], point["x"], point["y"], point["z"])
+
+    # enabling the legend
+    space.show_legend()
 
     # saving the 3D space to file
     space.save_to_file(output_filename, "png")
