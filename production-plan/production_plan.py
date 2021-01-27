@@ -13,7 +13,7 @@ def main():
     order = {
         "date": None,
         "quantity": None,
-        "product": {"name": str(input("Enter the name of the item: ")), "time_to_manufacture": None}
+        "product": {"name": str(input("Enter the name of the item: ")), "time_to_manufacture": -1}
     }
 
     while True:
