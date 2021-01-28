@@ -119,15 +119,14 @@ class Plot3D:
 
     # plotting a point in the 3D space
     def add3Dpoint(self, label, x, y, z):
-        self.ax.scatter(x, y, z, marker='o', label=label, alpha=0.5)
+        self.ax.scatter(x, y, z, marker='o', label=label, alpha=0.3)
         self.ax.text(x, y, z, label)
 
     # plotting a plane in the 3D space
     def add3Dplane(self, label, x, y, z):
-        tmp = self.ax.plot_surface(x, y, z, label=label, alpha=0.5)
+        tmp = self.ax.plot_surface(x, y, z, label=label, alpha=0.3)
         tmp._facecolors2d = tmp._facecolor3d
         tmp._edgecolors2d = tmp._edgecolor3d
-        self.ax.text(np.average(x), np.average(y), np.average(z), label)
 
     def show_legend(self):
         self.ax.legend(loc="lower right")
